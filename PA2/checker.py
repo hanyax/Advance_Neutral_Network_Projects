@@ -1,6 +1,9 @@
 ################################################################################
-# CSE 251B: Programming Assignment 2
-# Winter 2021
+# CSE 253: Programming Assignment 2
+# Code snippet by Manjot Bilkhu
+# Winter 2020
+################################################################################
+# We've provided you with the dataset in PA2.zip
 ################################################################################
 # To install PyYaml, refer to the instructions for your system:
 # https://pyyaml.org/wiki/PyYAMLDocumentation
@@ -17,9 +20,9 @@ import pickle
 
 def get_data(path):
     """
-    Load the sabity data to verify your implementation.
+    Load the sanity data to verify your implementation.
     """
-    return pickle.load(open(path + 'sanity.pkl', 'rb'), encoding='latin1')
+    return pickle.load(open(path + 'sanity.pkl', 'rb'))
 
 
 def load_config(path):
@@ -48,7 +51,7 @@ def sanity_layers(data):
     np.random.seed(42)
 
     # Pseudo-input.
-    random_input = np.random.randn(1, 100)
+    random_input = np.random.randn(1, 50)
 
     # Get the activations.
     act_sigmoid = neuralnet.Activation('sigmoid')
@@ -67,7 +70,7 @@ def sanity_layers(data):
     err_tanh    = np.sum(np.abs(data['out_tanh'] - out_tanh))
     err_ReLU    = np.sum(np.abs(data['out_ReLU'] - out_ReLU))
     err_leakyReLU = np.sum(np.abs(data['out_leakyReLU'] - out_leakyReLU))
-
+    
     # Check the errors.
     check_error(err_sigmoid, "Sigmoid Forward Pass")
     check_error(err_tanh,    "Tanh Forward Pass")
@@ -125,6 +128,8 @@ def sanity_network(data, default_config):
             error_b   = np.sum(np.abs(data['nnet'].layers[layer_idx].b   - layer.b))
             error_d_w = np.sum(np.abs(data['nnet'].layers[layer_idx].d_w - layer.d_w))
             error_d_b = np.sum(np.abs(data['nnet'].layers[layer_idx].d_b - layer.d_b))
+            #print("Zero", np.abs(data['nnet'].layers[layer_idx].w))
+            #print("One", layer.w)
 
             check_error(error_x,   f"Layer{layer_no}: Input")
             check_error(error_w,   f"Layer{layer_no}: Weights")
