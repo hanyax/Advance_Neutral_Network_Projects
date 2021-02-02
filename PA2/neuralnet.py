@@ -202,7 +202,7 @@ class Layer():
         Define the architecture and create placeholder.
         """
         
-        self.w = np.random.rand(in_units, out_units) * 1e-10   # Declare the Weight matrix
+        self.w = np.random.rand(in_units, out_units) * 1e-9   # Declare the Weight matrix
         self.b = np.random.rand(out_units)    # Create a placeholder for Bias
         self.x = None    # Save the input to forward in this
         self.a = None    # Save the output of forward pass in this (without activation
@@ -333,9 +333,9 @@ class Neuralnetwork():
         #for i in range(len(self.layers)-1, -1, -1):
             if i % 2 == 0:
                 self.m_w[i] = self.gamma * self.m_w[i] + (1-self.gamma) * (self.layers[i].d_w + 2 * self.Lambda * self.layers[i].w)
-                self.layers[i].w -= self.lr * self.m_w[i]
+                self.layers[i].w -= self.lr * (self.m_w[i])
                 self.m_b[i] = self.gamma * self.m_b[i] + (1-self.gamma) * (self.layers[i].d_b)
-                self.layers[i].b -= self.lr * self.m_b[i]
+                self.layers[i].b -= self.lr * (self.m_b[i])
         return
     
     def saveWeight(self):
@@ -536,7 +536,7 @@ if __name__ == "__main__":
     # Load the data
     x_train, y_train = load_data(path="./", mode="train")
     x_test,  y_test  = load_data(path="./", mode="t10k")
-    Q3_C(x_train, y_train, config)
+    #Q3_C(x_train, y_train, config)
     
     shuffler = np.random.permutation(len(x_train))
     x_train = x_train[shuffler]
@@ -567,12 +567,7 @@ if __name__ == "__main__":
     axs[1].set_ylabel("Acc")
     axs[1].set_title("Accurate rate vs Epoch")
     axs[1].legend(loc='best')
-
-
-# In[ ]:
-
-
-
+    plt.show()
 
 
 # In[ ]:
