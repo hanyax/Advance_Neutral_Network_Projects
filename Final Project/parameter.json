@@ -1,0 +1,20 @@
+{
+  "experiment_name": "default_experiment",
+  "dataset": {
+    "data_location":"data/"
+  },
+  "experiment": {
+    "num_worker": 2,
+    "batch_size":8,
+    "num_epochs":400,
+    "learning_rate": 2e-4,
+    "early_stop": 3
+  },
+  "cycleGAN": {
+    "nc": 3, 
+    "nz": 100, 
+    "ngf": 64,
+    "ngpu": 1,
+    "lr": 2e-4
+  }
+}

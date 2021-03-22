@@ -10,9 +10,9 @@ n_class    = 27
 
 # a label and all meta information
 Label = namedtuple( 'Label' , [
-    'name'        , 
-    'level3Id'    , 
-    'color'       , 
+    'name'        ,
+    'level3Id'    ,
+    'color'       ,
     ] )
 
 labels = [
@@ -29,7 +29,7 @@ labels = [
     Label(  'car'                  ,   9  , (  0,  0,142)  ),
     Label(  'truck'                ,  10 ,  (  0,  0, 70)  ),
     Label(  'bus'                  ,  11 ,  (  0, 60,100)  ),
-    Label(  'vehicle fallback'     ,  12 ,  (136, 143, 153)),  
+    Label(  'vehicle fallback'     ,  12 ,  (136, 143, 153)),
     Label(  'curb'                 ,   13 ,  (220, 190, 40)),
     Label(  'wall'                 ,  14 ,  (102,102,156)  ),
     Label(  'fence'                ,  15 ,  (190,153,153)  ),
@@ -38,13 +38,13 @@ labels = [
     Label(  'traffic sign'         ,  18 ,  (220,220,  0)  ),
     Label(  'traffic light'        ,  19 ,  (250,170, 30)  ),
     Label(  'pole'                 ,  20 ,  (153,153,153)  ),
-    Label(  'obs-str-bar-fallback' , 21 ,  (169, 187, 214) ),  
+    Label(  'obs-str-bar-fallback' , 21 ,  (169, 187, 214) ),
     Label(  'building'             ,  22 ,  ( 70, 70, 70)  ),
     Label(  'bridge/tunnel'        ,  23 ,  (150,100,100)  ),
     Label(  'vegetation'           ,  24 ,  (107,142, 35)  ),
     Label(  'sky'                  ,  25 ,  ( 70,130,180)  ),
     Label(  'unlabeled'            ,  26 ,  (  0,  0,  0)  ),
-]   
+]
 
 class IddDataset(Dataset):
 
@@ -52,9 +52,10 @@ class IddDataset(Dataset):
         self.data      = pd.read_csv(csv_file)
         self.n_class   = n_class
         self.mode = csv_file
-        
+
         # Add any transformations here
-        
+
+
         # The following transformation normalizes each channel using the mean and std provided
         self.transforms = transforms.Compose([transforms.ToTensor(),
                                               transforms.Normalize((0.485, 0.456, 0.406), (0.229, 0.224, 0.225)),])
@@ -63,15 +64,15 @@ class IddDataset(Dataset):
         return len(self.data)
 
     def __getitem__(self, idx):
-        
+
         img_name = self.data.iloc[idx, 0]
         img = Image.open(img_name).convert('RGB')
         label_name = self.data.iloc[idx, 1]
         label = Image.open(label_name)
-        
+
         img = np.asarray(img) / 255. # scaling [0-255] values to [0-1]
         label = np.asarray(label)
-        
+
         img = self.transforms(img).float() # Normalization
         label = torch.from_numpy(label.copy()).long() # convert to tensor
 
@@ -80,5 +81,5 @@ class IddDataset(Dataset):
         target = torch.zeros(self.n_class, h, w)
         for c in range(self.n_class):
             target[c][label == c] = 1
-        
+
         return img, target, label
